@@ -26,7 +26,7 @@ export default function LayoutAccount({ children }: Readonly<{
                             ></Image>
                         </ImageProfile>
                     </div>
-                    <TextMain>{geti18n("ACCOUNT_HELLO_USER", { context: { name: "test" } })}</TextMain>
+                    <TextMain>{geti18n("ACCOUNT_HELLO_USER", { lang: "en", context: { name: "test" } })}</TextMain>
                 </SubHeader>
                 <BottomBar></BottomBar>
             </Header>

@@ -69,13 +69,13 @@ function generateHashFromRandomBytes(byteSize: number, hashAlgorithm: string = '
     return hash.digest('base64');
 }
 
-function redirect(url: URL, auth: string, type?: string) {
+function redirect(url: URL, auth?: string, type?: string) {
     
     if (type) {
         if (!(type === "streaming" || type === "auth")) {
             return new Response("service: "+type+"\n no is authrized", { status: 403 })
         }
-        if(type !== "auth"){
+        if(type !== "auth" && auth){
             url.searchParams.set("token", auth)
             url.searchParams.set("t", String(Date.now()))
         }
