@@ -1,0 +1,8 @@
+{
+    "en": {
+        "ACCOUNT_WELCOME_USER": "Welcome, {name}",
+        "ACCOUNT_HELLO_USER": "Hello, {name}",
+        "SOCIAL_DESCRIPTION": "Select Your Preferred Social Login",
+        "SOCIAL_TITLE": "Social Login"
+    }
+}
