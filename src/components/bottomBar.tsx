@@ -49,7 +49,7 @@ export default function BottomBar({ children }: Readonly<{
                 {buttons.map(([name, href], index) => (<FLINK
                     href={href}
                     key={index}
-                    onClick={handleClick(href, router, index) as Function}
+                    onClick={handleClick(href, router, index) as any}
                 >
                     {name}
                 </FLINK>))}
