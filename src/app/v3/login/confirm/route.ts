@@ -73,15 +73,14 @@ function generateHashFromRandomBytes(byteSize: number, hashAlgorithm: string = '
 
 function redirect(url: URL, auth?: string, type?: string) {
     
-    if (type) {
         if (!(type === "streaming" || type === "auth")) {
             return new Response("service: "+type+"\n no is authrized", { status: 403 })
         }
         if(type !== "auth" && auth){
-            url.searchParams.set("token", auth)
+            url.searchParams.set("token", btoa(auth))
             url.searchParams.set("t", String(Date.now()))
         }
-    }
+    
     const redirectResponse = Response.redirect(url, 302);
     const headers = new Headers(redirectResponse.headers);
     headers.set('Set-Cookie', `${_Cookie_Auth_key}=${auth} Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=86400`);
