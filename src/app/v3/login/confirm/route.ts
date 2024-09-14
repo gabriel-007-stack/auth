@@ -40,10 +40,10 @@ export async function GET(request: Request) {
 
     const { sub, name, email } = user;
     try {
-        const data = (await pool.query("SELECT sid, auth FROM auth_.user WHERE sid = $1", [sub])).rows[0]
+        const data = (await pool.query("SELECT sid, auth FROM auth_.user WHERE sid = $1", [sub])).rows[0] as unknown as any
 
         if (data) {
-            return redirect(cont)
+            return redirect(cont, data.auth, type)
         }
 
         // User does not exist, create a new record
@@ -73,7 +73,7 @@ function generateHashFromRandomBytes(byteSize: number, hashAlgorithm: string = '
 
 function redirect(url: URL, auth?: string, type?: string) {
     
-        if (!(type === "streaming" || type === "auth") && auth) {
+        if (!(type === "streaming" || type === "auth") && type) {
             return new Response("service: "+type+"\n no is authrized", { status: 403 })
         }
         if(type !== "auth" && auth){
