@@ -17,7 +17,7 @@ export async function GET(request: Request) {
     const [] = [];
     let cont;
     let hl_ = "en";
-    let type = undefined;
+    let type = "auth";
     try {
         const [url, hl, m] = atob(cookies().get(_KEY_TEMNP)?.value ?? "").split("|");
         cont = new URL(decodeURIComponent(atob(url)))
@@ -43,7 +43,7 @@ export async function GET(request: Request) {
         const data = (await pool.query("SELECT sid, auth FROM auth_.user WHERE sid = $1", [sub])).rows[0] as unknown as any
 
         if (data) {
-            return redirect(cont, data.auth, type)
+            return redirect(cont, data.auth, undefined)
         }
 
         // User does not exist, create a new record
@@ -58,7 +58,7 @@ export async function GET(request: Request) {
         const { rows: [newUser_] } = await pool.query(`INSERT INTO auth_.user (name, email, sid, auth) VALUES ($1, $2, $3, $4);`, [name, email, sub, auth])
 
 
-        return redirect(cont, auth, type)
+        return redirect(cont, auth, undefined)
     } catch (error) {
         return new Response(`Internal Server Error`, { status: 500 });
     }
@@ -71,7 +71,7 @@ function generateHashFromRandomBytes(byteSize: number, hashAlgorithm: string = '
     return hash.digest('base64');
 }
 
-function redirect(url: URL, auth?: string, type?: string) {
+function redirect(url: URL, auth: string, type?: string) {
     
         if (!(type === "streaming" || type === "auth") && type) {
             return new Response("service: "+type+"\n no is authrized", { status: 403 })
