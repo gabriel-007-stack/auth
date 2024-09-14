@@ -73,7 +73,7 @@ function generateHashFromRandomBytes(byteSize: number, hashAlgorithm: string = '
 
 function redirect(url: URL, auth?: string, type?: string) {
     
-        if (!(type === "streaming" || type === "auth")) {
+        if (!(type === "streaming" || type === "auth") && auth) {
             return new Response("service: "+type+"\n no is authrized", { status: 403 })
         }
         if(type !== "auth" && auth){
