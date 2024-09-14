@@ -13,6 +13,10 @@ export function GET(request: Request) {
     url.searchParams.set("continue", continue_);
     url.searchParams.set("hl", hl);
 
+    const _ = new URL(continue_);
+    if (_.origin !== dw.origin && dw.origin !== "http://localhost:3000" && dw.origin !== "https://app-yoth.vercel.app") {
+        return new Response(null, { status: 403 })
+    }
 
     if (social_id && _KEYS.includes(social_id)) {
 

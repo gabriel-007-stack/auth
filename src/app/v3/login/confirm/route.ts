@@ -20,16 +20,18 @@ export async function GET(request: Request) {
     let type = undefined;
     try {
         const [url, hl, m] = atob(cookies().get(_KEY_TEMNP)?.value ?? "").split("|");
-        cont = new URL(atob(url))
+        cont = new URL(decodeURIComponent(atob(url)))
         hl_ = hl ?? "en"
         type = m
-    } catch (error) { }
+    } catch (error) {
+        console.log(error);
+    }
+    
     cont ??= new URL("/account", url.origin)
     cont.searchParams.set("hl", hl_);
     if (!code) {
         return new Response("Code is required", { status: 400 });
     }
-
     const user = await handleLogin(code, url.origin) as unknown as User | undefined;
 
     if (!user) {
