@@ -1,6 +1,11 @@
 import { createGoogleLoginUrl } from "@/auth/utils";
 import { _GOOGLE_KEY, _KEY_TEMNP, _KEYS } from "@/config";
 
+const authorizedOrigins = [
+    "http://localhost:3000",
+    "https://app-yoth.vercel.app"
+];
+
 export function GET(request: Request) {
     const dw = new URL(request.url)
     let url = new URL(dw.origin)
@@ -13,8 +18,16 @@ export function GET(request: Request) {
     url.searchParams.set("continue", continue_);
     url.searchParams.set("hl", hl);
 
-    const _ = new URL(continue_);
-    if (_.origin !== dw.origin && dw.origin !== "http://localhost:3000" && dw.origin !== "https://app-yoth.vercel.app") {
+    let _;
+    try {
+        _ = new URL(continue_);
+    } catch (e) {
+        return new Response(null, { status: 400 });
+    }
+
+    if (!authorizedOrigins.includes(_.origin) && _.origin !== dw.origin) {
+        console.log(_);
+        
         return new Response(null, { status: 403 })
     }
 
